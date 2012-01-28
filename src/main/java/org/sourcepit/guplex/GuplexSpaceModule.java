@@ -2,7 +2,7 @@
  * Copyright (C) 2012 Bosch Software Innovations GmbH. All rights reserved.
  */
 
-package org.sourcepit.gpb;
+package org.sourcepit.guplex;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.sonatype.guice.bean.binders.SpaceModule;
@@ -17,11 +17,11 @@ import com.google.inject.Binder;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class GpbSpaceModule extends SpaceModule
+public class GuplexSpaceModule extends SpaceModule
 {
    private final PlexusContainer plexus;
 
-   public GpbSpaceModule(PlexusContainer plexus, ClassSpace space, BeanScanning scanning)
+   public GuplexSpaceModule(PlexusContainer plexus, ClassSpace space, BeanScanning scanning)
    {
       super(space, scanning);
       this.plexus = plexus;
@@ -32,12 +32,12 @@ public class GpbSpaceModule extends SpaceModule
    {
       return new ClassSpaceVisitorDecorator(super.visitor(binder))
       {
-         private GpbFieldBinder fieldBinder;
+         private GuplexFieldBinder fieldBinder;
 
          @Override
          public void visit(ClassSpace space)
          {
-            fieldBinder = new GpbFieldBinder(plexus, binder, space);
+            fieldBinder = new GuplexFieldBinder(plexus, binder, space);
             super.visit(space);
          }
 

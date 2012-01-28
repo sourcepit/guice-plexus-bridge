@@ -2,7 +2,7 @@
  * Copyright (C) 2012 Bosch Software Innovations GmbH. All rights reserved.
  */
 
-package org.sourcepit.gpb;
+package org.sourcepit.guplex;
 
 import org.sonatype.guice.bean.scanners.asm.AnnotationVisitor;
 import org.sonatype.guice.bean.scanners.asm.Attribute;

@@ -2,7 +2,7 @@
  * Copyright (C) 2012 Bosch Software Innovations GmbH. All rights reserved.
  */
 
-package org.sourcepit.gpb;
+package org.sourcepit.guplex;
 
 import java.net.URL;
 
@@ -12,8 +12,8 @@ import org.sonatype.guice.bean.scanners.asm.AnnotationVisitor;
 import org.sonatype.guice.bean.scanners.asm.ClassVisitor;
 import org.sonatype.guice.bean.scanners.asm.FieldVisitor;
 import org.sonatype.guice.bean.scanners.asm.MethodVisitor;
-import org.sourcepit.gpb.IDecoratorFactory;
-import org.sourcepit.gpb.MethodVisitorDecorator;
+import org.sourcepit.guplex.IDecoratorFactory;
+import org.sourcepit.guplex.MethodVisitorDecorator;
 
 /**
  * ClassSpaceVisitorDecorator

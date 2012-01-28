@@ -4,7 +4,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.gpb;
+package org.sourcepit.guplex;
 
 import org.sonatype.guice.bean.scanners.EmptyAnnotationVisitor;
 import org.sonatype.guice.bean.scanners.asm.AnnotationVisitor;
@@ -14,7 +14,7 @@ import org.sonatype.guice.bean.scanners.asm.FieldVisitor;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public abstract class GpbFieldVisitorImpl implements FieldVisitor
+public abstract class GuplexFieldVisitorImpl implements FieldVisitor
 {
    private String className;
 
@@ -31,11 +31,11 @@ public abstract class GpbFieldVisitorImpl implements FieldVisitor
       @Override
       public void visit(String attributeName, Object value)
       {
-         GpbFieldVisitorImpl.this.namedAnnotationValue = (String) value;
+         GuplexFieldVisitorImpl.this.namedAnnotationValue = (String) value;
       }
    };
 
-   public GpbFieldVisitorImpl visitField(String className, int access, String name, String desc, String signature)
+   public GuplexFieldVisitorImpl visitField(String className, int access, String name, String desc, String signature)
    {
       this.className = className;
       this.fieldName = name;

@@ -4,7 +4,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.gpb;
+package org.sourcepit.guplex;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -28,7 +28,7 @@ import com.google.inject.name.Names;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class GpbFieldBinder extends GpbFieldVisitorImpl
+public class GuplexFieldBinder extends GuplexFieldVisitorImpl
 {
    private final PlexusContainer plexus;
 
@@ -38,7 +38,7 @@ public class GpbFieldBinder extends GpbFieldVisitorImpl
 
    private final Set<Class<?>> processedTypes = new HashSet<Class<?>>();
 
-   public GpbFieldBinder(PlexusContainer plexus, Binder binder, ClassSpace classSpace)
+   public GuplexFieldBinder(PlexusContainer plexus, Binder binder, ClassSpace classSpace)
    {
       this.plexus = plexus;
       this.binder = binder;
