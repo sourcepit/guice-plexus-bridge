@@ -129,7 +129,7 @@ public class GuplexFieldBinder extends GuplexFieldVisitorImpl
          bindingName = Names.named(roleHint);
       }
 
-      binder.bind(Key.get(bindingType, bindingName)).toProvider(newPlexusProvider(plexus, bindingType, roleHint));
+      binder.bind(Key.get(bindingType, bindingName)).toProvider(newPlexusProvider(plexus, bindingType, "default".equals(roleHint) ? null : roleHint));
    }
 
    private <T> Provider<T> newPlexusProvider(final PlexusContainer plexus, final Class<T> type, final String roleHint)
