@@ -14,7 +14,7 @@ import org.sonatype.guice.bean.scanners.asm.FieldVisitor;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public abstract class GuplexFieldVisitorImpl implements FieldVisitor
+public abstract class GuplexFieldVisitor implements FieldVisitor
 {
    private String className;
 
@@ -31,11 +31,11 @@ public abstract class GuplexFieldVisitorImpl implements FieldVisitor
       @Override
       public void visit(String attributeName, Object value)
       {
-         GuplexFieldVisitorImpl.this.namedAnnotationValue = (String) value;
+         GuplexFieldVisitor.this.namedAnnotationValue = (String) value;
       }
    };
 
-   public GuplexFieldVisitorImpl visitField(String className, int access, String name, String desc, String signature)
+   public GuplexFieldVisitor visitField(String className, int access, String name, String desc, String signature)
    {
       this.className = className;
       this.fieldName = name;

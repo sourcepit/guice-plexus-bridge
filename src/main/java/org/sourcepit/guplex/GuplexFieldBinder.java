@@ -28,7 +28,7 @@ import com.google.inject.name.Names;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class GuplexFieldBinder extends GuplexFieldVisitorImpl
+public class GuplexFieldBinder extends GuplexFieldVisitor
 {
    private final PlexusContainer plexus;
 
