@@ -6,34 +6,18 @@
 
 package org.sourcepit.guplex;
 
-import org.sonatype.guice.bean.scanners.EmptyAnnotationVisitor;
-import org.sonatype.guice.bean.scanners.asm.AnnotationVisitor;
-import org.sonatype.guice.bean.scanners.asm.Attribute;
 import org.sonatype.guice.bean.scanners.asm.FieldVisitor;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public abstract class GuplexFieldVisitor implements FieldVisitor
+public abstract class GuplexFieldVisitor extends AbstractGuplexVisitor implements FieldVisitor
 {
    private String className;
 
    private String fieldName;
 
-   private boolean hasInjectAnnotation;
-
-   private String namedAnnotationValue;
-
    private String signature;
-
-   private final AnnotationVisitor namedAnnotationVisitor = new EmptyAnnotationVisitor()
-   {
-      @Override
-      public void visit(String attributeName, Object value)
-      {
-         GuplexFieldVisitor.this.namedAnnotationValue = (String) value;
-      }
-   };
 
    public GuplexFieldVisitor visitField(String className, int access, String name, String desc, String signature)
    {
@@ -43,31 +27,13 @@ public abstract class GuplexFieldVisitor implements FieldVisitor
       return this;
    }
 
-   public AnnotationVisitor visitAnnotation(String desc, boolean visible)
-   {
-      if ("Ljavax/inject/Inject;".equals(desc))
-      {
-         hasInjectAnnotation = true;
-      }
-      else if ("Ljavax/inject/Named;".equals(desc))
-      {
-         return namedAnnotationVisitor;
-      }
-      return null;
-   }
-
-   public void visitAttribute(Attribute attr)
-   {
-   }
-
    public final void visitEnd()
    {
       visitedField(className, fieldName, signature, hasInjectAnnotation, namedAnnotationValue);
+      super.visitEnd();
       className = null;
       fieldName = null;
       signature = null;
-      hasInjectAnnotation = false;
-      namedAnnotationValue = null;
    }
 
    protected abstract void visitedField(String className, String fieldName, String signature,

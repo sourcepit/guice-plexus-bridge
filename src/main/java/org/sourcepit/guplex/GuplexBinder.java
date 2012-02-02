@@ -6,13 +6,18 @@
 
 package org.sourcepit.guplex;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.inject.Inject;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
@@ -28,7 +33,7 @@ import com.google.inject.name.Names;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class GuplexFieldBinder extends GuplexFieldVisitor
+public class GuplexBinder
 {
    private final PlexusContainer plexus;
 
@@ -38,15 +43,14 @@ public class GuplexFieldBinder extends GuplexFieldVisitor
 
    private final Set<Class<?>> processedTypes = new HashSet<Class<?>>();
 
-   public GuplexFieldBinder(PlexusContainer plexus, Binder binder, ClassSpace classSpace)
+   public GuplexBinder(PlexusContainer plexus, Binder binder, ClassSpace classSpace)
    {
       this.plexus = plexus;
       this.binder = binder;
       this.classSpace = classSpace;
    }
 
-   @Override
-   protected void visitedField(String className, String fieldName, String signature, boolean hasInjectAnnotation,
+   public void visitedField(String className, String fieldName, String signature, boolean hasInjectAnnotation,
       String namedAnnotationValue)
    {
       final int length = signature.length();
@@ -70,7 +74,6 @@ public class GuplexFieldBinder extends GuplexFieldVisitor
          {
             if (processedTypes.add(type))
             {
-
                processPotentialType(type);
             }
          }
@@ -80,25 +83,99 @@ public class GuplexFieldBinder extends GuplexFieldVisitor
       }
    }
 
-   private static void collectPotentialTypes(final Set<Class<?>> potentialTypes, final Field field)
+   public void visitedMethod(String className, String methodName, String signature, boolean hasInjectAnnotation,
+      String namedAnnotationValue)
    {
-      final Class<?> fieldType = field.getType();
-      if (fieldType != null)
+      if (hasInjectAnnotation)
       {
-         potentialTypes.add(fieldType);
+         processMethod(className, methodName, signature);
       }
+   }
 
-      final Type genericType = field.getGenericType();
-      if (genericType instanceof ParameterizedType)
+   private void processMethod(String className, String methodName, String signature)
+   {
+      try
       {
-         final Type[] actualTypeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
-         for (Type typeArg : actualTypeArguments)
+         final Class<?> clazz = classSpace.loadClass(className);
+         final Set<Class<?>> potentialTypes = new LinkedHashSet<Class<?>>();
+         if ("<init>".equals(methodName))
          {
-            if (typeArg instanceof Class)
+            for (Constructor<?> constructor : clazz.getDeclaredConstructors())
             {
-               potentialTypes.add((Class<?>) typeArg);
+               if (constructor.getAnnotation(Inject.class) != null)
+               {
+                  collectPotentialTypes(potentialTypes, constructor);
+               }
             }
          }
+         else
+         {
+            for (Method method : clazz.getDeclaredMethods())
+            {
+               if (methodName.startsWith(method.getName()))
+               {
+                  if (method.getAnnotation(Inject.class) != null)
+                  {
+                     collectPotentialTypes(potentialTypes, method);
+                  }
+               }
+            }
+         }
+         for (Class<?> type : potentialTypes)
+         {
+            if (processedTypes.add(type))
+            {
+               processPotentialType(type);
+            }
+         }
+      }
+      catch (Exception e)
+      { // fail silently
+      }
+   }
+   
+   private void collectPotentialTypes(final Set<Class<?>> potentialTypes, Constructor<?> constructor)
+   {
+      for (Type type : constructor.getGenericParameterTypes())
+      {
+         collectPotentialTypes(potentialTypes, type);
+      }
+   }
+
+   private void collectPotentialTypes(final Set<Class<?>> potentialTypes, Method method)
+   {
+      for (Type type : method.getGenericParameterTypes())
+      {
+         collectPotentialTypes(potentialTypes, type);
+      }
+   }
+
+   private static void collectPotentialTypes(final Set<Class<?>> potentialTypes, final Field field)
+   {
+      final Type type = field.getGenericType();
+      collectPotentialTypes(potentialTypes, type);
+   }
+
+   private static void collectPotentialTypes(final Set<Class<?>> potentialTypes, final Type type)
+   {
+      if (type instanceof Class)
+      {
+         potentialTypes.add((Class<?>) type);
+      }
+      else if (type instanceof ParameterizedType)
+      {
+         final ParameterizedType parameterizedType = (ParameterizedType) type;
+         collectPotentialTypes(potentialTypes, parameterizedType.getRawType());
+         final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+         for (Type typeArg : actualTypeArguments)
+         {
+            collectPotentialTypes(potentialTypes, typeArg);
+         }
+      }
+      else if (type instanceof GenericArrayType)
+      {
+         GenericArrayType genericArrayType = (GenericArrayType) type;
+         collectPotentialTypes(potentialTypes, genericArrayType.getGenericComponentType());
       }
    }
 
@@ -129,7 +206,8 @@ public class GuplexFieldBinder extends GuplexFieldVisitor
          bindingName = Names.named(roleHint);
       }
 
-      binder.bind(Key.get(bindingType, bindingName)).toProvider(newPlexusProvider(plexus, bindingType, "default".equals(roleHint) ? null : roleHint));
+      binder.bind(Key.get(bindingType, bindingName)).toProvider(
+         newPlexusProvider(plexus, bindingType, "default".equals(roleHint) ? null : roleHint));
    }
 
    private <T> Provider<T> newPlexusProvider(final PlexusContainer plexus, final Class<T> type, final String roleHint)

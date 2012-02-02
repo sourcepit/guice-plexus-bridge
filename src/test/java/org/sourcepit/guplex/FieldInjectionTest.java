@@ -24,7 +24,7 @@ import org.sourcepit.guplex.test.GuplexTestCase;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class GuplexSpaceModuleTest extends GuplexTestCase
+public class FieldInjectionTest extends GuplexTestCase
 {
    @Inject
    private IComponent component;
@@ -45,6 +45,31 @@ public class GuplexSpaceModuleTest extends GuplexTestCase
    @Inject
    @Named("namedJsr330Component")
    private IComponent namedJsr330Component;
+
+   @Override
+   protected ClassLoader getClassLoader()
+   {
+      return new ClassLoader(super.getClassLoader())
+      {
+         @Override
+         public Class<?> loadClass(String name) throws ClassNotFoundException
+         {
+            if (MethodInjectionTest.class.getName().equals(name))
+            {
+               throw new ClassNotFoundException();
+            }
+            if (ConstructorInjectionTest.class.getName().equals(name))
+            {
+               throw new ClassNotFoundException();
+            }
+            if (NeedConstructorInjection.class.getName().equals(name))
+            {
+               throw new ClassNotFoundException();
+            }
+            return super.loadClass(name);
+         }
+      };
+   }
 
    public void testAll() throws Exception
    {

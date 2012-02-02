@@ -33,7 +33,7 @@ public abstract class GuplexTestCase extends PlexusTestCase implements Module
    protected void setUp() throws Exception
    {
       super.setUp();
-      lookup(Guplex.class).inject(this, new SetUpModule());
+      lookup(Guplex.class).inject(this, getClassLoader(), new SetUpModule());
    }
 
    @Override

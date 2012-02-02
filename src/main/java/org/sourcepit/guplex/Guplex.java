@@ -30,6 +30,18 @@ public class Guplex
 
    public void inject(final Object injectionRoot, Module... modules)
    {
+      inject(injectionRoot, injectionRoot.getClass().getClassLoader(), modules);
+   }
+
+   public void inject(ClassLoader classLoader, Module... modules)
+   {
+      final List<Module> _modules = new ArrayList<Module>(modules == null ? 1 : modules.length + 1);
+      Collections.addAll(_modules, modules);
+      inject(classLoader, _modules);
+   }
+
+   public void inject(final Object injectionRoot, ClassLoader classLoader, Module... modules)
+   {
       final List<Module> _modules = new ArrayList<Module>(modules == null ? 2 : modules.length + 2);
       _modules.add(new AbstractModule()
       {
@@ -39,13 +51,6 @@ public class Guplex
             requestInjection(injectionRoot);
          }
       });
-      Collections.addAll(_modules, modules);
-      inject(injectionRoot.getClass().getClassLoader(), _modules);
-   }
-
-   public void inject(ClassLoader classLoader, Module... modules)
-   {
-      final List<Module> _modules = new ArrayList<Module>(modules == null ? 1 : modules.length + 1);
       Collections.addAll(_modules, modules);
       inject(classLoader, _modules);
    }
