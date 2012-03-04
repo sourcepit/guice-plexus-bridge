@@ -15,29 +15,34 @@ import javax.inject.Named;
 import org.codehaus.plexus.PlexusContainer;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
-import org.junit.Test;
 import org.sourcepit.guplex.jsr330.Jsr330Component;
 import org.sourcepit.guplex.jsr330.NamedJsr330Component;
 import org.sourcepit.guplex.plexus.NamedPlexusComponent;
 import org.sourcepit.guplex.plexus.PlexusComponent;
-import org.sourcepit.guplex.test.GuplexTest;
+import org.sourcepit.guplex.test.GuplexTestCase;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class MethodInjectionTest extends GuplexTest
+public class FieldInjectionTestCase extends GuplexTestCase
 {
+   @Inject
    private IComponent component;
 
+   @Inject
    private List<IComponent> componentList;
 
+   @Inject
    private Map<String, IComponent> componentMap;
 
+   @Inject
    private PlexusContainer plexusContainer;
 
+   @Inject
    @Named("namedPlexusComponent")
    private IComponent namedPlexusComponent;
 
+   @Inject
    @Named("namedJsr330Component")
    private IComponent namedJsr330Component;
 
@@ -49,7 +54,7 @@ public class MethodInjectionTest extends GuplexTest
          @Override
          public Class<?> loadClass(String name) throws ClassNotFoundException
          {
-            if (FieldInjectionTestCase.class.getName().equals(name))
+            if (MethodInjectionTestCase.class.getName().equals(name))
             {
                throw new ClassNotFoundException();
             }
@@ -66,43 +71,6 @@ public class MethodInjectionTest extends GuplexTest
       };
    }
 
-   @Inject
-   public void setComponent(@Named("namedPlexusComponent") IComponent component)
-   {
-      this.component = component;
-   }
-
-   @Inject
-   public void setComponentList(List<IComponent> componentList)
-   {
-      this.componentList = componentList;
-   }
-
-   @Inject
-   public void setComponentMap(Map<String, IComponent> componentMap)
-   {
-      this.componentMap = componentMap;
-   }
-
-   @Inject
-   public void setPlexusContainer(PlexusContainer plexusContainer)
-   {
-      this.plexusContainer = plexusContainer;
-   }
-
-   @Inject
-   public void setNamedPlexusComponent(@Named("namedPlexusComponent") IComponent namedPlexusComponent)
-   {
-      this.namedPlexusComponent = namedPlexusComponent;
-   }
-
-   @Inject
-   public void setNamedJsr330Component(@Named("namedJsr330Component") IComponent namedJsr330Component)
-   {
-      this.namedJsr330Component = namedJsr330Component;
-   }
-
-   @Test
    public void testAll() throws Exception
    {
       assertThat(plexusContainer, IsNull.notNullValue());

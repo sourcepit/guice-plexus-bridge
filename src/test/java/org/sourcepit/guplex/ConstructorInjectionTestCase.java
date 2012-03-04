@@ -11,13 +11,12 @@ import static org.junit.Assert.assertThat;
 import javax.inject.Inject;
 
 import org.hamcrest.core.IsNull;
-import org.junit.Test;
-import org.sourcepit.guplex.test.GuplexTest;
+import org.sourcepit.guplex.test.GuplexTestCase;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class ConstructorInjectionTest extends GuplexTest
+public class ConstructorInjectionTestCase extends GuplexTestCase
 {
    @Inject
    private NeedConstructorInjection foo;
@@ -43,7 +42,6 @@ public class ConstructorInjectionTest extends GuplexTest
       };
    }
    
-   @Test
    public void testConstructor() throws Exception
    {
       assertThat(foo, IsNull.notNullValue());

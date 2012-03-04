@@ -15,17 +15,16 @@ import javax.inject.Named;
 import org.codehaus.plexus.PlexusContainer;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
-import org.junit.Test;
 import org.sourcepit.guplex.jsr330.Jsr330Component;
 import org.sourcepit.guplex.jsr330.NamedJsr330Component;
 import org.sourcepit.guplex.plexus.NamedPlexusComponent;
 import org.sourcepit.guplex.plexus.PlexusComponent;
-import org.sourcepit.guplex.test.GuplexTest;
+import org.sourcepit.guplex.test.GuplexTestCase;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class MethodInjectionTest extends GuplexTest
+public class MethodInjectionTestCase extends GuplexTestCase
 {
    private IComponent component;
 
@@ -102,7 +101,6 @@ public class MethodInjectionTest extends GuplexTest
       this.namedJsr330Component = namedJsr330Component;
    }
 
-   @Test
    public void testAll() throws Exception
    {
       assertThat(plexusContainer, IsNull.notNullValue());

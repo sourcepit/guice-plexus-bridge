@@ -27,6 +27,7 @@ import org.sonatype.guice.bean.reflect.ClassSpace;
 import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.Provider;
+import com.google.inject.Scopes;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
@@ -207,7 +208,7 @@ public class GuplexBinder
       }
 
       binder.bind(Key.get(bindingType, bindingName)).toProvider(
-         newPlexusProvider(plexus, bindingType, "default".equals(roleHint) ? null : roleHint));
+         newPlexusProvider(plexus, bindingType, "default".equals(roleHint) ? null : roleHint)).in(Scopes.NO_SCOPE);
    }
 
    private <T> Provider<T> newPlexusProvider(final PlexusContainer plexus, final Class<T> type, final String roleHint)

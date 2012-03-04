@@ -63,6 +63,6 @@ public class Guplex
 
    private GuplexSpaceModule newGuplexSpaceModule(ClassLoader classLoader)
    {
-      return new GuplexSpaceModule(plexusContainer, new URLClassSpace(classLoader), BeanScanning.CACHE);
+      return new GuplexSpaceModule(plexusContainer, new URLClassSpace(classLoader), BeanScanning.ON);
    }
 }

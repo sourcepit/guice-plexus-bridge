@@ -15,16 +15,17 @@ import javax.inject.Named;
 import org.codehaus.plexus.PlexusContainer;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
+import org.junit.Test;
 import org.sourcepit.guplex.jsr330.Jsr330Component;
 import org.sourcepit.guplex.jsr330.NamedJsr330Component;
 import org.sourcepit.guplex.plexus.NamedPlexusComponent;
 import org.sourcepit.guplex.plexus.PlexusComponent;
-import org.sourcepit.guplex.test.GuplexTestCase;
+import org.sourcepit.guplex.test.GuplexTest;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class FieldInjectionTest extends GuplexTestCase
+public class FieldInjectionTest extends GuplexTest
 {
    @Inject
    private IComponent component;
@@ -54,11 +55,11 @@ public class FieldInjectionTest extends GuplexTestCase
          @Override
          public Class<?> loadClass(String name) throws ClassNotFoundException
          {
-            if (MethodInjectionTest.class.getName().equals(name))
+            if (MethodInjectionTestCase.class.getName().equals(name))
             {
                throw new ClassNotFoundException();
             }
-            if (ConstructorInjectionTest.class.getName().equals(name))
+            if (ConstructorInjectionTestCase.class.getName().equals(name))
             {
                throw new ClassNotFoundException();
             }
@@ -71,6 +72,7 @@ public class FieldInjectionTest extends GuplexTestCase
       };
    }
 
+   @Test
    public void testAll() throws Exception
    {
       assertThat(plexusContainer, IsNull.notNullValue());
