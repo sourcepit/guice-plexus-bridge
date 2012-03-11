@@ -17,6 +17,7 @@ import org.sonatype.inject.BeanScanning;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.google.inject.Module;
 
 /**
@@ -37,10 +38,15 @@ public class Guplex
    {
       final List<Module> _modules = new ArrayList<Module>(modules == null ? 1 : modules.length + 1);
       Collections.addAll(_modules, modules);
-      inject(classLoader, _modules);
+      inject(Collections.singletonList(classLoader), _modules);
    }
 
    public void inject(final Object injectionRoot, ClassLoader classLoader, Module... modules)
+   {
+      inject(injectionRoot, Collections.singletonList(classLoader), modules);
+   }
+
+   public void inject(final Object injectionRoot, List<ClassLoader> classLoaders, Module... modules)
    {
       final List<Module> _modules = new ArrayList<Module>(modules == null ? 2 : modules.length + 2);
       _modules.add(new AbstractModule()
@@ -51,14 +57,33 @@ public class Guplex
             requestInjection(injectionRoot);
          }
       });
-      Collections.addAll(_modules, modules);
-      inject(classLoader, _modules);
+      if (modules != null)
+      {
+         Collections.addAll(_modules, modules);
+      }
+      inject(classLoaders, _modules);
    }
 
-   private void inject(ClassLoader classLoader, List<Module> modules)
+   private void inject(List<ClassLoader> classLoaders, List<Module> modules)
    {
-      modules.add(newGuplexSpaceModule(classLoader));
+      for (ClassLoader classLoader : classLoaders)
+      {
+         modules.add(newGuplexSpaceModule(classLoader));
+      }
       Guice.createInjector(new WireModule(modules));
+   }
+
+   public Injector createInjector(List<? extends ClassLoader> classLoaders, List<Module> modules)
+   {
+      if (modules == null)
+      {
+         modules = new ArrayList<Module>(classLoaders.size());
+      }
+      for (ClassLoader classLoader : classLoaders)
+      {
+         modules.add(newGuplexSpaceModule(classLoader));
+      }
+      return Guice.createInjector(new WireModule(modules));
    }
 
    private GuplexSpaceModule newGuplexSpaceModule(ClassLoader classLoader)
