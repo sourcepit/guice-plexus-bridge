@@ -15,6 +15,7 @@ import javax.inject.Named;
 import org.codehaus.plexus.PlexusContainer;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
+import org.junit.Test;
 import org.sourcepit.guplex.jsr330.Jsr330Component;
 import org.sourcepit.guplex.jsr330.NamedJsr330Component;
 import org.sourcepit.guplex.plexus.NamedPlexusComponent;
@@ -39,7 +40,7 @@ public class MethodInjectionTestCase extends GuplexTestCase
 
    @Named("namedJsr330Component")
    private IComponent namedJsr330Component;
-
+   
    @Override
    protected ClassLoader getClassLoader()
    {
@@ -99,6 +100,18 @@ public class MethodInjectionTestCase extends GuplexTestCase
    public void setNamedJsr330Component(@Named("namedJsr330Component") IComponent namedJsr330Component)
    {
       this.namedJsr330Component = namedJsr330Component;
+   }
+   
+   @Override
+   protected boolean isUseIndex()
+   {
+      return getName().contains("_Indexed");
+   }
+   
+   @Test
+   public void testAll_Indexed() throws Exception
+   {
+      testAll();
    }
 
    public void testAll() throws Exception

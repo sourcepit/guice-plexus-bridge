@@ -15,7 +15,9 @@ import javax.inject.Named;
 import org.codehaus.plexus.PlexusContainer;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.sourcepit.guplex.jsr330.Jsr330Component;
 import org.sourcepit.guplex.jsr330.NamedJsr330Component;
 import org.sourcepit.guplex.plexus.NamedPlexusComponent;
@@ -47,6 +49,15 @@ public class FieldInjectionTest extends GuplexTest
    @Named("namedJsr330Component")
    private IComponent namedJsr330Component;
 
+   @Rule
+   public TestName name = new TestName();
+
+   @Override
+   protected boolean isUseIndex()
+   {
+      return name.getMethodName().contains("_Indexed");
+   }
+
    @Override
    protected ClassLoader getClassLoader()
    {
@@ -70,6 +81,12 @@ public class FieldInjectionTest extends GuplexTest
             return super.loadClass(name);
          }
       };
+   }
+
+   @Test
+   public void testAll_Indexed() throws Exception
+   {
+      testAll();
    }
 
    @Test

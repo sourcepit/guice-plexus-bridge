@@ -2,11 +2,16 @@
  * Copyright (C) 2012 Bosch Software Innovations GmbH. All rights reserved.
  */
 
-package org.sourcepit.guplex;
+package org.sourcepit.guplex.internal;
+
+import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.sonatype.guice.bean.binders.SpaceModule;
 import org.sonatype.guice.bean.reflect.ClassSpace;
+import org.sonatype.guice.bean.scanners.ClassSpaceScanner;
 import org.sonatype.guice.bean.scanners.ClassSpaceVisitor;
 import org.sonatype.guice.bean.scanners.asm.ClassVisitor;
 import org.sonatype.guice.bean.scanners.asm.FieldVisitor;
@@ -22,10 +27,14 @@ public class GuplexSpaceModule extends SpaceModule
 {
    private final PlexusContainer plexus;
 
-   public GuplexSpaceModule(PlexusContainer plexus, ClassSpace space, BeanScanning scanning)
+   private final Collection<String> classNames;
+
+   public GuplexSpaceModule(PlexusContainer plexus, ClassSpace space, BeanScanning scanning,
+      Collection<String> classNames)
    {
       super(space, scanning);
       this.plexus = plexus;
+      this.classNames = classNames == null ? Collections.<String> emptyList() : classNames;
    }
 
    @Override
@@ -35,12 +44,24 @@ public class GuplexSpaceModule extends SpaceModule
       {
          private GuplexBinder fieldBinder;
 
-
          @Override
          public void visit(ClassSpace space)
          {
             fieldBinder = new GuplexBinder(plexus, binder, space);
             super.visit(space);
+
+            for (String className : classNames)
+            {
+               final URL url = space.getResource(className.replace('.', '/') + ".class");
+               if (url != null)
+               {
+                  final ClassVisitor cv = visitClass(url);
+                  if (cv != null)
+                  {
+                     ClassSpaceScanner.accept(cv, url);
+                  }
+               }
+            }
          }
 
          @Override

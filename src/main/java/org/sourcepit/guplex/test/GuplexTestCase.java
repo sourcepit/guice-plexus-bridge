@@ -15,6 +15,7 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.sonatype.guice.bean.binders.ParameterKeys;
 import org.sonatype.guice.bean.locators.MutableBeanLocator;
 import org.sourcepit.guplex.Guplex;
+import org.sourcepit.guplex.InjectionRequest;
 
 import com.google.inject.Binder;
 import com.google.inject.Key;
@@ -33,7 +34,22 @@ public abstract class GuplexTestCase extends PlexusTestCase implements Module
    protected void setUp() throws Exception
    {
       super.setUp();
-      lookup(Guplex.class).inject(this, getClassLoader(), new SetUpModule());
+      lookup(Guplex.class).inject(newInjectionRequest());
+   }
+
+   protected InjectionRequest newInjectionRequest()
+   {
+      final InjectionRequest injectionRequest = new InjectionRequest();
+      injectionRequest.setUseIndex(isUseIndex());
+      injectionRequest.getInjectionRoots().add(this);
+      injectionRequest.getClassLoaders().add(getClassLoader());
+      injectionRequest.getModules().add(new SetUpModule());
+      return injectionRequest;
+   }
+
+   protected boolean isUseIndex()
+   {
+      return false;
    }
 
    @Override
@@ -43,7 +59,7 @@ public abstract class GuplexTestCase extends PlexusTestCase implements Module
       super.tearDown();
    }
 
-   final class SetUpModule implements Module
+   public final class SetUpModule implements Module
    {
       public void configure(final Binder binder)
       {
@@ -54,9 +70,6 @@ public abstract class GuplexTestCase extends PlexusTestCase implements Module
          GuplexTestCase.this.configure(properties);
 
          binder.bind(ParameterKeys.PROPERTIES).toInstance(properties);
-
-         // will be done internally by Guplex
-         // binder.requestInjection(GuplexTestCase.this);
       }
    }
 

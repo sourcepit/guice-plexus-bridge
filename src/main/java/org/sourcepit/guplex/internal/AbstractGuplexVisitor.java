@@ -4,7 +4,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.guplex;
+package org.sourcepit.guplex.internal;
 
 import org.sonatype.guice.bean.scanners.EmptyAnnotationVisitor;
 import org.sonatype.guice.bean.scanners.asm.AnnotationVisitor;

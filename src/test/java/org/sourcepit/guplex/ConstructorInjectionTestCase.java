@@ -11,6 +11,7 @@ import static org.junit.Assert.assertThat;
 import javax.inject.Inject;
 
 import org.hamcrest.core.IsNull;
+import org.junit.Test;
 import org.sourcepit.guplex.test.GuplexTestCase;
 
 /**
@@ -40,6 +41,18 @@ public class ConstructorInjectionTestCase extends GuplexTestCase
             return super.loadClass(name);
          }
       };
+   }
+   
+   @Override
+   protected boolean isUseIndex()
+   {
+      return getName().contains("_Indexed");
+   }
+   
+   @Test
+   public void testConstructor_Indexed() throws Exception
+   {
+      testConstructor();
    }
    
    public void testConstructor() throws Exception

@@ -4,7 +4,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.guplex;
+package org.sourcepit.guplex.internal;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

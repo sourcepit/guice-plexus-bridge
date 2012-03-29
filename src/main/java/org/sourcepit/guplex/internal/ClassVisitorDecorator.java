@@ -2,14 +2,14 @@
  * Copyright (C) 2012 Bosch Software Innovations GmbH. All rights reserved.
  */
 
-package org.sourcepit.guplex;
+package org.sourcepit.guplex.internal;
 
 import org.sonatype.guice.bean.scanners.asm.AnnotationVisitor;
 import org.sonatype.guice.bean.scanners.asm.Attribute;
 import org.sonatype.guice.bean.scanners.asm.ClassVisitor;
 import org.sonatype.guice.bean.scanners.asm.FieldVisitor;
 import org.sonatype.guice.bean.scanners.asm.MethodVisitor;
-import org.sourcepit.guplex.IDecoratorFactory;
+import org.sourcepit.guplex.internal.IDecoratorFactory;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>

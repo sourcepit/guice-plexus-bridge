@@ -11,7 +11,9 @@ import static org.junit.Assert.assertThat;
 import javax.inject.Inject;
 
 import org.hamcrest.core.IsNull;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.sourcepit.guplex.test.GuplexTest;
 
 /**
@@ -19,9 +21,12 @@ import org.sourcepit.guplex.test.GuplexTest;
  */
 public class ConstructorInjectionTest extends GuplexTest
 {
+   @Rule
+   public TestName name = new TestName();
+
    @Inject
    private NeedConstructorInjection foo;
-   
+
    @Override
    protected ClassLoader getClassLoader()
    {
@@ -42,7 +47,19 @@ public class ConstructorInjectionTest extends GuplexTest
          }
       };
    }
-   
+
+   @Override
+   protected boolean isUseIndex()
+   {
+      return name.getMethodName().contains("_Indexed");
+   }
+
+   @Test
+   public void testConstructor_Indexed() throws Exception
+   {
+      testConstructor();
+   }
+
    @Test
    public void testConstructor() throws Exception
    {
