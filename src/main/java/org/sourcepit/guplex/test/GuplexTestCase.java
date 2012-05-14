@@ -11,7 +11,9 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.sonatype.guice.bean.binders.ParameterKeys;
 import org.sonatype.guice.bean.locators.MutableBeanLocator;
 import org.sourcepit.guplex.Guplex;
@@ -35,6 +37,13 @@ public abstract class GuplexTestCase extends PlexusTestCase implements Module
    {
       super.setUp();
       lookup(Guplex.class).inject(newInjectionRequest());
+   }
+   
+   @Override
+   protected void customizeContainerConfiguration(ContainerConfiguration containerConfiguration)
+   {
+      super.customizeContainerConfiguration(containerConfiguration);
+      containerConfiguration.setClassWorld(new ClassWorld("plexus.core", getClassLoader()));
    }
 
    protected InjectionRequest newInjectionRequest()

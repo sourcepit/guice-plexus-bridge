@@ -13,6 +13,8 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.junit.After;
 import org.junit.Before;
 import org.sonatype.guice.bean.binders.ParameterKeys;
@@ -37,6 +39,13 @@ public abstract class GuplexTest extends PlexusTest implements Module
    public void setUp() throws Exception
    {
       lookup(Guplex.class).inject(newInjectionRequest());
+   }
+   
+   @Override
+   protected void customizeContainerConfiguration(ContainerConfiguration containerConfiguration)
+   {
+      super.customizeContainerConfiguration(containerConfiguration);
+      containerConfiguration.setClassWorld(new ClassWorld("plexus.core", getClassLoader()));
    }
 
    protected InjectionRequest newInjectionRequest()
