@@ -61,13 +61,19 @@ public abstract class PlexusTest
 
       try
       {
-         container = new DefaultPlexusContainer(containerConfiguration);
+         container = newPlexusContainer(containerConfiguration);
       }
       catch (final PlexusContainerException e)
       {
          e.printStackTrace();
          fail("Failed to create plexus container.");
       }
+   }
+
+   protected DefaultPlexusContainer newPlexusContainer(final ContainerConfiguration containerConfiguration)
+      throws PlexusContainerException
+   {
+      return new DefaultPlexusContainer(containerConfiguration);
    }
 
    /**
