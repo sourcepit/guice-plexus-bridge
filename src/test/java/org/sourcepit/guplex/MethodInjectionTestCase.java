@@ -14,6 +14,7 @@ import javax.inject.Named;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.hamcrest.core.Is;
+import org.hamcrest.core.IsInstanceOf;
 import org.hamcrest.core.IsNull;
 import org.junit.Test;
 import org.sourcepit.guplex.jsr330.Jsr330Component;
@@ -40,7 +41,7 @@ public class MethodInjectionTestCase extends GuplexTestCase
 
    @Named("namedJsr330Component")
    private IComponent namedJsr330Component;
-   
+
    @Override
    protected ClassLoader getClassLoader()
    {
@@ -101,13 +102,13 @@ public class MethodInjectionTestCase extends GuplexTestCase
    {
       this.namedJsr330Component = namedJsr330Component;
    }
-   
+
    @Override
    protected boolean isUseIndex()
    {
       return getName().contains("_Indexed");
    }
-   
+
    @Test
    public void testAll_Indexed() throws Exception
    {
@@ -125,7 +126,8 @@ public class MethodInjectionTestCase extends GuplexTestCase
 
       assertThat(componentMap, IsNull.notNullValue());
       assertThat(componentMap.size(), Is.is(4));
-      assertThat(componentMap.get(PlexusComponent.class.getName()), IsNull.notNullValue());
+      assertThat(componentMap.get("default" /* PlexusComponent.class.getName() */),
+         IsInstanceOf.instanceOf(PlexusComponent.class));
       assertThat(componentMap.get("namedPlexusComponent"), IsNull.notNullValue());
       assertThat(componentMap.get(Jsr330Component.class.getName()), IsNull.notNullValue());
       assertThat(componentMap.get("namedJsr330Component"), IsNull.notNullValue());

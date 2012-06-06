@@ -14,6 +14,7 @@ import javax.inject.Named;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.hamcrest.core.Is;
+import org.hamcrest.core.IsInstanceOf;
 import org.hamcrest.core.IsNull;
 import org.junit.Rule;
 import org.junit.Test;
@@ -101,7 +102,8 @@ public class FieldInjectionTest extends GuplexTest
 
       assertThat(componentMap, IsNull.notNullValue());
       assertThat(componentMap.size(), Is.is(4));
-      assertThat(componentMap.get(PlexusComponent.class.getName()), IsNull.notNullValue());
+      assertThat(componentMap.get("default" /* PlexusComponent.class.getName() */),
+         IsInstanceOf.instanceOf(PlexusComponent.class));
       assertThat(componentMap.get("namedPlexusComponent"), IsNull.notNullValue());
       assertThat(componentMap.get(Jsr330Component.class.getName()), IsNull.notNullValue());
       assertThat(componentMap.get("namedJsr330Component"), IsNull.notNullValue());

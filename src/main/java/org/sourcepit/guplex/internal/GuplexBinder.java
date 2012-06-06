@@ -134,7 +134,7 @@ public class GuplexBinder
       { // fail silently
       }
    }
-   
+
    private void collectPotentialTypes(final Set<Class<?>> potentialTypes, Constructor<?> constructor)
    {
       for (Type type : constructor.getGenericParameterTypes())
@@ -198,7 +198,7 @@ public class GuplexBinder
       final String roleHint = componentDescriptor.getRoleHint();
 
       final Named bindingName;
-      if ("default".equals(roleHint) || roleHint == null)
+      if (roleHint == null)
       {
          bindingName = Names.named(implTypeName);
       }
@@ -207,8 +207,8 @@ public class GuplexBinder
          bindingName = Names.named(roleHint);
       }
 
-      binder.bind(Key.get(bindingType, bindingName)).toProvider(
-         newPlexusProvider(plexus, bindingType, "default".equals(roleHint) ? null : roleHint)).in(Scopes.NO_SCOPE);
+      binder.bind(Key.get(bindingType, bindingName)).toProvider(newPlexusProvider(plexus, bindingType, roleHint))
+         .in(Scopes.NO_SCOPE);
    }
 
    private <T> Provider<T> newPlexusProvider(final PlexusContainer plexus, final Class<T> type, final String roleHint)
