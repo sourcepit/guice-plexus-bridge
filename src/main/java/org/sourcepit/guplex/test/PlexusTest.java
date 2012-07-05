@@ -95,7 +95,7 @@ public abstract class PlexusTest
    }
 
    @After
-   protected void tearDown() throws Exception
+   public void tearDown() throws Exception
    {
       if (container != null)
       {
