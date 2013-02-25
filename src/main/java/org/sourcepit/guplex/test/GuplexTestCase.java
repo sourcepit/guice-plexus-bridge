@@ -60,6 +60,11 @@ public abstract class GuplexTestCase extends PlexusTestCase implements Module
    {
       return false;
    }
+   
+   protected ClassLoader getPlexusCoreClassLoader()
+   {
+      return getClassLoader();
+   }
 
    @Override
    protected void tearDown() throws Exception

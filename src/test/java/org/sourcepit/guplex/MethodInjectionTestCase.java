@@ -43,9 +43,9 @@ public class MethodInjectionTestCase extends GuplexTestCase
    private IComponent namedJsr330Component;
 
    @Override
-   protected ClassLoader getClassLoader()
+   protected ClassLoader getPlexusCoreClassLoader()
    {
-      return new ClassLoader(super.getClassLoader())
+      return new ClassLoader(super.getPlexusCoreClassLoader())
       {
          @Override
          public Class<?> loadClass(String name) throws ClassNotFoundException

@@ -23,7 +23,7 @@ public class ConstructorInjectionTestCase extends GuplexTestCase
    private NeedConstructorInjection foo;
    
    @Override
-   protected ClassLoader getClassLoader()
+   protected ClassLoader getPlexusCoreClassLoader()
    {
       return new ClassLoader(super.getClassLoader())
       {
