@@ -79,6 +79,9 @@ public class GuplexBinder
             }
          }
       }
+      catch (NoClassDefFoundError e)
+      { // fail silently
+      }
       catch (Exception e)
       { // fail silently
       }
@@ -129,6 +132,9 @@ public class GuplexBinder
                processPotentialType(type);
             }
          }
+      }
+      catch (NoClassDefFoundError e)
+      { // fail silently
       }
       catch (Exception e)
       { // fail silently
