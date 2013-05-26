@@ -22,6 +22,7 @@ public class InjectorRequest
    private final Set<ClassLoader> classLoaders;
    private final Set<Class<?>> additionalClassesToScan;
    private boolean useIndex;
+   private boolean initEPackages;
 
    public InjectorRequest()
    {
@@ -36,6 +37,7 @@ public class InjectorRequest
       this.classLoaders = new LinkedHashSet<ClassLoader>(origin.getClassLoaders());
       this.additionalClassesToScan = new LinkedHashSet<Class<?>>(origin.getAdditionalClassesToScan());
       this.useIndex = origin.isUseIndex();
+      this.initEPackages = origin.initEPackages;
    }
 
    public List<Module> getModules()
@@ -61,5 +63,15 @@ public class InjectorRequest
    public void setUseIndex(boolean useIndex)
    {
       this.useIndex = useIndex;
+   }
+
+   public void setInitEPackages(boolean initEPackages)
+   {
+      this.initEPackages = initEPackages;
+   }
+
+   public boolean isInitEPackages()
+   {
+      return initEPackages;
    }
 }

@@ -16,6 +16,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.sonatype.guice.bean.binders.WireModule;
 import org.sonatype.guice.bean.reflect.URLClassSpace;
 import org.sonatype.inject.BeanScanning;
+import org.sourcepit.guplex.emf.EPackageInitializingModule;
 import org.sourcepit.guplex.internal.GuplexSpaceModule;
 
 import com.google.inject.AbstractModule;
@@ -123,6 +124,10 @@ public class Guplex
       for (ClassLoader classLoader : classLoaders)
       {
          modules.add(newGuplexSpaceModule(classLoader, classNames, request.isUseIndex()));
+         if (request.isInitEPackages())
+         {
+            modules.add(new EPackageInitializingModule(classLoader));
+         }
       }
    }
 

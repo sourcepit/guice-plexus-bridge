@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+<plugin>
+
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<!-- @generated Example -->
+		<package uri="uri1" class="class1" genModel="genModel1" />
+		<!-- @generated Example -->
+		<package uri="uri2" class="class2" genModel="genModel2" />
+	</extension>
+
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<!-- @generated Example -->
+		<package uri="uri3" class="class3" genModel="genModel3" />
+	</extension>
+
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<!-- @generated Example -->
+		<package uri="uri4" class="class4" genModel="genModel4" />
+	</extension>
+
+</plugin>
