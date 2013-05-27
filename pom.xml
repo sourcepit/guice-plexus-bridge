@@ -9,11 +9,11 @@
 	</parent>
 
 	<artifactId>guice-plexus-bridge</artifactId>
-	<version>0.1.0-alpha-7</version>
+	<version>0.1.0-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:sourcepit/guice-plexus-bridge.git</connection>
-		<tag>guice-plexus-bridge-0.1.0-alpha-7</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<!-- repo to resolve parent pom from -->
